@@ -9,6 +9,9 @@
     "build": "tsc",
     "lint": "eslint . --fix"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "keywords": [
     "inster"
   ],
