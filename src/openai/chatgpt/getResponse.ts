@@ -1,6 +1,6 @@
 import logger from '../../logger'
 import { openAIConnector } from '../openAIConnector'
-import { CHAT_GPT_MODEL } from './config'
+import { CHAT_GPT_MODEL } from '../../config'
 
 export const getResponse = async (prompt: string, requestId: string) => {
   const type = 'ChatGPT.getResponse'

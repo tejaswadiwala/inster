@@ -13,7 +13,7 @@ export const getName = async (requestId: string) => {
     })
 
     const helpers: Helpers = new Helpers(requestId)
-    const endpoint = 'me?fields=id,name&transport=cors'
+    const endpoint = '/me?fields=id,name&transport=cors'
 
     const response: AxiosResponse = await helpers.axiosHelper.getResponse(
       metaAxiosInstance,
@@ -23,7 +23,7 @@ export const getName = async (requestId: string) => {
     logger.info({
       type: type,
       message: `${type}: Successfully completed execution - ${JSON.stringify(
-        response
+        response.data
       )}.`,
       requestId: requestId,
     })
