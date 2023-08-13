@@ -1,5 +1,4 @@
 import app from './app'
-import 'dotenv/config'
 import { SERVER_PORT } from './config'
 
 export const start = async () => {
