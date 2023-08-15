@@ -12,6 +12,7 @@ export const getResponse = async (prompt: string, requestId: string) => {
     })
 
     // TODO: Change the type of any below
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response: any = await openAIConnector.createChatCompletion({
       model: CHAT_GPT_MODEL.NAME,
       messages: [{ role: 'user', content: prompt }],

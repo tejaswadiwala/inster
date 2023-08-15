@@ -1,26 +1,27 @@
 import logger from '../../logger'
 import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-export const getResponse = async (
+export const postResponse = async (
   instance: AxiosInstance,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any,
   endpoint: string,
   requestId: string,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse> => {
-  const type = 'AxiosHelper.getResponse'
+  const type = 'AxiosHelper.postResponse'
   try {
     logger.info({
       type: type,
       message: `${type}: Starting now.`,
       requestId: requestId,
     })
-
     let response: AxiosResponse
 
     if (config) {
-      response = await instance.get(endpoint, config)
+      response = await instance.post(endpoint, data, config)
     } else {
-      response = await instance.get(endpoint)
+      response = await instance.post(endpoint, data)
     }
 
     logger.info({
