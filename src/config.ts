@@ -39,3 +39,17 @@ export const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 export enum CHAT_GPT_MODEL {
   NAME = 'gpt-3.5-turbo',
 }
+
+/* ============== Shopify ============== */
+
+/* Shopify Credentials */
+export const SHOPIFY_SHOP_NAME = process.env.SHOPIFY_SHOP_NAME
+export const SHOPIFY_API_KEY = process.env.SHOPIFY_API_KEY
+export const SHOPIFY_API_PASSWORD = process.env.SHOPIFY_API_PASSWORD
+export const SHOPIFY_API_VERSION = process.env.SHOPIFY_API_VERSION
+export const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN
+
+/* Shopify Enums */
+export enum SHOPIFY_GET_ALL_PRODUCTS_PARAMS {
+  STATUS_ACTIVE = 'active',
+}

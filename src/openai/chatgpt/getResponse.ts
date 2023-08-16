@@ -1,5 +1,5 @@
 import logger from '../../logger'
-import { openAIConnector } from '../openAIConnector'
+import { openAIAuth } from '../openAIAuth'
 import { CHAT_GPT_MODEL } from '../../config'
 
 export const getResponse = async (prompt: string, requestId: string) => {
@@ -13,19 +13,19 @@ export const getResponse = async (prompt: string, requestId: string) => {
 
     // TODO: Change the type of any below
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response: any = await openAIConnector.createChatCompletion({
+    const response: any = await openAIAuth.createChatCompletion({
       model: CHAT_GPT_MODEL.NAME,
       messages: [{ role: 'user', content: prompt }],
     })
 
     logger.info({
       type: type,
-      message: `${type}: Successfully completed execution.`,
+      message: response.data.choices[0].message.content,
       requestId: requestId,
     })
     logger.info({
       type: type,
-      message: response.data.choices[0].message.content,
+      message: `${type}: Successfully completed execution.`,
       requestId: requestId,
     })
     return response.data.choices[0].message.content
