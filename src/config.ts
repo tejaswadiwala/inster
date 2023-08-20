@@ -53,3 +53,7 @@ export const SHOPIFY_ACCESS_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN
 export enum SHOPIFY_GET_ALL_PRODUCTS_PARAMS {
   STATUS_ACTIVE = 'active',
 }
+
+/* ============== Inster Frontend ============== */
+
+export const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN
