@@ -1,8 +1,20 @@
 import express from 'express'
 import OpenAIController from './openai/OpenAIController'
 import { v4 as uuidv4 } from 'uuid'
+import Routes from './routes/Routes'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+import { FRONTEND_ORIGIN } from './config'
 
 const app = express()
+app.use(bodyParser.json())
+app.use(cors())
+
+app.use(
+  cors({
+    origin: FRONTEND_ORIGIN,
+  })
+)
 
 app.get('/', (req, res) => {
   const requestId = uuidv4()
@@ -16,6 +28,20 @@ app.get('/chatGPT/getResponse/:prompt', async (req, res) => {
     const openai: OpenAIController = new OpenAIController(requestId)
     const response = await openai.chatGPT.getResponse(prompt)
     return res.status(200).send({ data: response, requestId: requestId })
+  } catch (error) {
+    return res.status(500).send({ error: error, requestId: requestId })
+  }
+})
+
+app.post('/register', async (req, res) => {
+  const requestId = uuidv4()
+  try {
+    const registrationInformation: RegistrationRequestDTO = req.body
+    const routes: Routes = new Routes(requestId)
+    await routes.loginRegistration.register(registrationInformation)
+    return res
+      .status(200)
+      .send({ data: 'User registered successfully.', requestId: requestId })
   } catch (error) {
     return res.status(500).send({ error: error, requestId: requestId })
   }
