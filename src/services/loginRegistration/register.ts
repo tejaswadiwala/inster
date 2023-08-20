@@ -1,7 +1,7 @@
 import logger from '../../logger'
 import crypto from 'crypto'
-
-const USERS = []
+import PsqlDbController from '../../psql/PsqlDbController'
+import pool from '../../psql/psqlAuth'
 
 export const register = async (
   registrationInformation: RegistrationRequestDTO,
@@ -21,12 +21,13 @@ export const register = async (
       .update(registrationInformation.password)
       .digest('hex')
 
-    // Store user in the in-memory database
-    USERS.push({
-      username: registrationInformation.username,
-      password: hashedPassword,
-      email: registrationInformation.email,
-    })
+    registrationInformation.password = hashedPassword
+
+    const psqlDbController: PsqlDbController = new PsqlDbController(
+      pool,
+      requestId
+    )
+    await psqlDbController.insertUser(registrationInformation)
 
     logger.info({
       type: type,
