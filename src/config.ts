@@ -57,3 +57,11 @@ export enum SHOPIFY_GET_ALL_PRODUCTS_PARAMS {
 /* ============== Inster Frontend ============== */
 
 export const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN
+
+/* ============== PostGreSql Database ============== */
+
+export const PG_DATABASE_USER = process.env.PG_DATABASE_USER
+export const PG_DATABASE_HOST = process.env.PG_DATABASE_HOST
+export const PG_DATABASE_NAME = process.env.PG_DATABASE_NAME
+export const PG_DATABASE_PASSWORD = process.env.PG_DATABASE_PASSWORD
+export const PG_DATABASE_PORT = process.env.PG_DATABASE_PORT

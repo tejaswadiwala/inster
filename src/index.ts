@@ -1,6 +1,7 @@
 import app from './app'
 import { SERVER_PORT } from './config'
 import logger from './logger'
+import pool from './psql/psqlAuth'
 
 export const start = async () => {
   const type = 'Inster'
@@ -21,6 +22,8 @@ export const start = async () => {
       type: type,
       message: `${type}: Stopping now.`,
     })
+
+    await pool.end()
 
     logger.info({
       type: type,
