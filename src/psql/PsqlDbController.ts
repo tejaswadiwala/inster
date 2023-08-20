@@ -1,6 +1,10 @@
 import { Pool, QueryResult } from 'pg'
 import logger from '../logger'
 
+enum TABLE {
+  NAME = 'inster_user_accounts',
+}
+
 class PsqlDbController {
   private pool: Pool
   private requestId: string
@@ -36,7 +40,7 @@ class PsqlDbController {
       })
 
       const query = `
-          INSERT INTO inster_user_accounts (username, password_hash, email)
+          INSERT INTO ${TABLE.NAME} (username, password_hash, email)
           VALUES ($1, $2, $3)
         `
       const values = [
@@ -44,6 +48,38 @@ class PsqlDbController {
         registrationInformation.password,
         registrationInformation.email,
       ]
+      logger.info({
+        type: type,
+        message: `${type}: Successfully completed execution.`,
+        requestId: this.requestId,
+      })
+      return this.executeQuery(query, values)
+    } catch (error) {
+      logger.error({
+        type: type,
+        message: `${type}: Error occurred.`,
+        error: error,
+        requestId: this.requestId,
+      })
+      throw error
+    }
+  }
+
+  public async authenticateUser(
+    loginRequest: LoginRequestDTO
+  ): Promise<QueryResult> {
+    const type = 'PsqlDbController.authenticateUser'
+    try {
+      logger.info({
+        type: type,
+        message: `${type}: Starting now.`,
+        requestId: this.requestId,
+      })
+
+      const query = `
+        SELECT * FROM ${TABLE.NAME} WHERE username = $1
+        `
+      const values = [loginRequest.username]
       logger.info({
         type: type,
         message: `${type}: Successfully completed execution.`,
