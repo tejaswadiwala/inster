@@ -47,4 +47,18 @@ app.post('/register', async (req, res) => {
   }
 })
 
+app.post('/login', async (req, res) => {
+  const requestId = uuidv4()
+  try {
+    const loginRequest: LoginRequestDTO = req.body
+    const routes: Routes = new Routes(requestId)
+    const response = await routes.loginRegistration.login(loginRequest)
+    return res
+      .status(response.statusCode)
+      .send({ data: response.data, requestId: requestId })
+  } catch (error) {
+    return res.status(500).send({ error: error, requestId: requestId })
+  }
+})
+
 export default app

@@ -1,3 +1,4 @@
+import { login } from './login'
 import { register } from './register'
 
 class LoginRegistrationService {
@@ -9,6 +10,10 @@ class LoginRegistrationService {
 
   public async register(registrationInformation: RegistrationRequestDTO) {
     return register(registrationInformation, this.requestId)
+  }
+
+  public async login(loginRequest: LoginRequestDTO): Promise<ApiResponse> {
+    return login(loginRequest, this.requestId)
   }
 }
 
