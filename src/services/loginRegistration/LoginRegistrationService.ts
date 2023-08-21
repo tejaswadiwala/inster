@@ -1,5 +1,6 @@
-import { login } from './login'
+import { authenticate } from './authenticate'
 import { register } from './register'
+import { signJWT } from './signJWT'
 
 class LoginRegistrationService {
   private requestId: string
@@ -12,8 +13,14 @@ class LoginRegistrationService {
     return register(registrationInformation, this.requestId)
   }
 
-  public async login(loginRequest: LoginRequestDTO): Promise<ApiResponse> {
-    return login(loginRequest, this.requestId)
+  public async authenticate(loginRequest: LoginRequestDTO): Promise<boolean> {
+    return authenticate(loginRequest, this.requestId)
+  }
+
+  public async signJWT(
+    loginRequest: LoginRequestDTO
+  ): Promise<LoginResponseDTO> {
+    return signJWT(loginRequest, this.requestId)
   }
 }
 

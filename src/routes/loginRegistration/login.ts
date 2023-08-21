@@ -4,7 +4,7 @@ import LoginRegistrationService from '../../services/loginRegistration/LoginRegi
 export const login = async (
   loginRequest: LoginRequestDTO,
   requestId: string
-): Promise<ApiResponse> => {
+): Promise<LoginResponseDTO> => {
   const type = 'Routes.LoginRegistration.login'
   try {
     logger.info({
@@ -14,14 +14,26 @@ export const login = async (
     })
 
     const loginRegistrationService = new LoginRegistrationService(requestId)
-    const response = await loginRegistrationService.login(loginRequest)
-
-    logger.info({
-      type: type,
-      message: `${type}: Successfully completed execution.`,
-      requestId: requestId,
-    })
-    return response
+    const isUserAuthenticated = await loginRegistrationService.authenticate(
+      loginRequest
+    )
+    if (isUserAuthenticated) {
+      const loginResponse: LoginResponseDTO =
+        await loginRegistrationService.signJWT(loginRequest)
+      logger.info({
+        type: type,
+        message: `${type}: Successfully completed execution.`,
+        requestId: requestId,
+      })
+      return loginResponse
+    } else {
+      logger.info({
+        type: type,
+        message: `${type}: Successfully completed execution.`,
+        requestId: requestId,
+      })
+      throw new Error('User not authenticated.')
+    }
   } catch (error) {
     logger.error({
       type: type,
