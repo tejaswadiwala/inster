@@ -4,22 +4,19 @@ import pool from '../../psql/psqlAuth'
 import { QueryResult } from 'pg'
 import crypto from 'crypto'
 
-export const login = async (
+export const authenticate = async (
   loginRequest: LoginRequestDTO,
   requestId: string
-): Promise<ApiResponse> => {
-  const type = 'LoginRegistrationService.login'
+): Promise<boolean> => {
+  const type = 'LoginRegistrationService.authenticate'
   try {
     logger.info({
       type: type,
-      message: `${type}: Starting now, logging in username - ${loginRequest.username}.`,
+      message: `${type}: Starting now, authenticating username - ${loginRequest.username}.`,
       requestId: requestId,
     })
 
-    let apiResponse: ApiResponse = {
-      data: 'Cannot login.',
-      statusCode: 400,
-    }
+    let isUserAuthenticated: boolean = false
 
     const psqlDbController: PsqlDbController = new PsqlDbController(
       pool,
@@ -38,10 +35,7 @@ export const login = async (
         .digest('hex')
 
       if (storedHashedPassword === hashedPassword) {
-        apiResponse = {
-          data: 'User successfully logged in.',
-          statusCode: 200,
-        }
+        isUserAuthenticated = true
       }
     }
 
@@ -50,7 +44,7 @@ export const login = async (
       message: `${type}: Successfully completed execution.`,
       requestId: requestId,
     })
-    return apiResponse
+    return isUserAuthenticated
   } catch (error) {
     logger.error({
       type: type,

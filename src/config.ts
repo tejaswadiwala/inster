@@ -4,6 +4,8 @@ dotenv.config()
 /* ============== Inster ============== */
 
 export const SERVER_PORT = process.env.SERVER_PORT
+export const PRIVATE_KEY = process.env.PRIVATE_KEY
+export const PUBLIC_KEY = process.env.PUBLIC_KEY
 
 /* ============== Meta ============== */
 

@@ -12,7 +12,7 @@ class LoginRegistration {
     return register(registrationInformation, this.requestId)
   }
 
-  public async login(loginRequest: LoginRequestDTO): Promise<ApiResponse> {
+  public async login(loginRequest: LoginRequestDTO): Promise<LoginResponseDTO> {
     return login(loginRequest, this.requestId)
   }
 }
