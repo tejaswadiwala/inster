@@ -7,7 +7,7 @@ class ShopifyController {
     this.requestId = requestId
   }
 
-  public async getAllProducts() {
+  public async getAllProducts(): Promise<GetAllProductsDTO> {
     return getAllProducts(this.requestId)
   }
 }
