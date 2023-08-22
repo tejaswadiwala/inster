@@ -1,11 +1,12 @@
 import Helpers from '../helpers/Helpers'
 import logger from '../logger'
-
 import { AxiosResponse } from 'axios'
 import { shopifyAxiosInstance } from './shopifyAuth'
 import { SHOPIFY_GET_ALL_PRODUCTS_PARAMS } from '../config'
 
-export const getAllProducts = async (requestId: string) => {
+export const getAllProducts = async (
+  requestId: string
+): Promise<GetAllProductsDTO> => {
   const type = 'ShopifyController.getAllProducts'
   try {
     logger.info({

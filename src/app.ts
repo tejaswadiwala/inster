@@ -6,6 +6,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import { FRONTEND_ORIGIN } from './config'
 import { verifyTokenMiddleware } from './auth'
+import { ProductInfo } from './services/post/models/ProductInfo'
 
 const app = express()
 app.use(bodyParser.json())
@@ -37,6 +38,16 @@ app.get(
     }
   }
 )
+app.get('/post/generateImage', verifyTokenMiddleware, async (req, res) => {
+  const requestId = uuidv4()
+  try {
+    const routes: Routes = new Routes(requestId)
+    const productInfo: ProductInfo = await routes.post.generateImage()
+    return res.status(200).send({ data: productInfo, requestId: requestId })
+  } catch (error) {
+    return res.status(500).send({ error: error, requestId: requestId })
+  }
+})
 
 app.post('/register', async (req, res) => {
   const requestId = uuidv4()
