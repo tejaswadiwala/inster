@@ -1,5 +1,5 @@
 import { ProductInfo } from '../../services/post/models/ProductInfo'
-import { generateImage } from './generateImage'
+import { generateProductInfo } from './generateProductInfo'
 
 class Post {
   private requestId: string
@@ -8,8 +8,8 @@ class Post {
     this.requestId = requestId
   }
 
-  public async generateImage(): Promise<ProductInfo> {
-    return generateImage(this.requestId)
+  public async generateProductInfo(): Promise<ProductInfo> {
+    return generateProductInfo(this.requestId)
   }
 }
 

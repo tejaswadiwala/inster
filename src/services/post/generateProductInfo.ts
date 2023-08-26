@@ -1,8 +1,10 @@
 import logger from '../../logger'
+import OpenAIController from '../../openai/OpenAIController'
+import ChatGPT from '../../openai/chatgpt/ChatGPT'
 import ShopifyController from '../../shopify/ShopifyController'
 import { ProductInfo } from './models/ProductInfo'
 
-export const generateImage = async (
+export const generateProductInfo = async (
   requestId: string
 ): Promise<ProductInfo> => {
   const type = 'PostService.generateImage'
@@ -20,10 +22,19 @@ export const generateImage = async (
       await shopifyController.getAllProducts()
     const randomProduct = selectRandomProduct(allProducts.products)
 
+    const prompt: string = ChatGPT.Personas.SocialMediaManager.captionCreator(
+      randomProduct.title,
+      randomProduct.body_html,
+      requestId
+    )
+    const openaiController: OpenAIController = new OpenAIController(requestId)
+    const caption: string = await openaiController.chatGPT.getResponse(prompt)
+
     const productInfo: ProductInfo = {
       title: randomProduct.title,
       description: randomProduct.body_html,
       imageUrl: randomProduct.image.src,
+      caption: caption,
     }
 
     logger.info({

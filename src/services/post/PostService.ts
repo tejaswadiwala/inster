@@ -1,4 +1,4 @@
-import { generateImage } from './generateImage'
+import { generateProductInfo } from './generateProductInfo'
 import { ProductInfo } from './models/ProductInfo'
 
 class PostService {
@@ -8,8 +8,8 @@ class PostService {
     this.requestId = requestId
   }
 
-  public async generateImage(): Promise<ProductInfo> {
-    return generateImage(this.requestId)
+  public async generateProductInfo(): Promise<ProductInfo> {
+    return generateProductInfo(this.requestId)
   }
 }
 
