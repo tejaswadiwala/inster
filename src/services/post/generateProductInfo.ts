@@ -1,6 +1,7 @@
 import logger from '../../logger'
-import OpenAIController from '../../openai/OpenAIController'
-import ChatGPT from '../../openai/chatgpt/ChatGPT'
+// TODO: Uncomment the below
+// import OpenAIController from '../../openai/OpenAIController'
+// import ChatGPT from '../../openai/chatgpt/ChatGPT'
 import ShopifyController from '../../shopify/ShopifyController'
 import { ProductInfo } from './models/ProductInfo'
 
@@ -22,19 +23,21 @@ export const generateProductInfo = async (
       await shopifyController.getAllProducts()
     const randomProduct = selectRandomProduct(allProducts.products)
 
+    /* TODO: Uncomment below before going live, i.e., once we get permission from Meta
     const prompt: string = ChatGPT.Personas.SocialMediaManager.captionCreator(
       randomProduct.title,
       randomProduct.body_html,
       requestId
     )
     const openaiController: OpenAIController = new OpenAIController(requestId)
-    const caption: string = await openaiController.chatGPT.getResponse(prompt)
+    const caption: string = await openaiController.chatGPT.getResponse(prompt)  
+    */
 
     const productInfo: ProductInfo = {
       title: randomProduct.title,
       description: randomProduct.body_html,
       imageUrl: randomProduct.image.src,
-      caption: caption,
+      caption: 'Example Caption',
     }
 
     logger.info({
