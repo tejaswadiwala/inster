@@ -2,10 +2,10 @@ import logger from '../../logger'
 import PostService from '../../services/post/PostService'
 import { ProductInfo } from '../../services/post/models/ProductInfo'
 
-export const generateImage = async (
+export const generateProductInfo = async (
   requestId: string
 ): Promise<ProductInfo> => {
-  const type = 'Routes.Post.generateImage'
+  const type = 'Routes.Post.generateProductInfo'
   try {
     logger.info({
       type: type,
@@ -14,7 +14,7 @@ export const generateImage = async (
     })
 
     const postService: PostService = new PostService(requestId)
-    const productInfo: ProductInfo = await postService.generateImage()
+    const productInfo: ProductInfo = await postService.generateProductInfo()
 
     logger.info({
       type: type,
