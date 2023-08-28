@@ -13,6 +13,9 @@ const pool = new Pool({
   database: PG_DATABASE_NAME,
   password: PG_DATABASE_PASSWORD,
   port: parseInt(PG_DATABASE_PORT as string),
+  ssl: {
+    rejectUnauthorized: false, // Temporary solution to SSL verification issue
+  }
 })
 
 export default pool
