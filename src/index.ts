@@ -1,5 +1,5 @@
 import app from './app'
-import { SERVER_PORT } from './config'
+import { PORT } from './config'
 import logger from './logger'
 import pool from './psql/psqlAuth'
 
@@ -10,10 +10,10 @@ export const start = async () => {
     message: `${type}: Starting now.`,
   })
 
-  app.listen(SERVER_PORT, () => {
+  app.listen(PORT, () => {
     logger.info({
       type: type,
-      message: `${type}: Server successfully started on port ${SERVER_PORT}`,
+      message: `${type}: Server successfully started on port ${PORT}`,
     })
   })
 
