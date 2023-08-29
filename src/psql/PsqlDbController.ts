@@ -20,9 +20,18 @@ class PsqlDbController {
     sqlQueryParams: any
   ): Promise<QueryResult> {
     const client = await this.pool.connect()
+    const type = 'PsqlDbController.executeQuery'
     try {
       const result = await client.query(sqlQueryText, sqlQueryParams)
       return result
+    } catch (error) {
+      logger.error({
+        type: type,
+        message: `${type}: Error occurred.`,
+        error: error,
+        requestId: this.requestId,
+      })
+      throw error
     } finally {
       client.release()
     }
