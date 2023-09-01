@@ -39,6 +39,7 @@ app.get(
   }
 )
 
+/* === Post Starts === */
 app.get(
   '/post/generateProductInfo',
   verifyTokenMiddleware,
@@ -54,6 +55,24 @@ app.get(
   }
 )
 
+app.post(
+  '/post/postPhotoToInstagram',
+  verifyTokenMiddleware,
+  async (req, res) => {
+    const requestId = uuidv4()
+    try {
+      const routes: Routes = new Routes(requestId)
+      await routes.post.postPhotoToInstagram()
+      return res.status(200).send({ data: 'ok', requestId: requestId })
+    } catch (error) {
+      return res.status(500).send({ error: error, requestId: requestId })
+    }
+  }
+)
+
+/* === Post Ends === */
+
+/* === Login Registration Starts === */
 app.post('/register', async (req, res) => {
   const requestId = uuidv4()
   try {
@@ -79,5 +98,6 @@ app.post('/login', async (req, res) => {
     return res.status(500).send({ error: error, requestId: requestId })
   }
 })
+/* === Login Registration Ends === */
 
 export default app

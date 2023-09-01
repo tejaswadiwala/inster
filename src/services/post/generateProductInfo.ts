@@ -51,6 +51,8 @@ export const generateProductInfo = async (
       caption: 'Example Caption',
     }
 
+    PostService.productInfoCache.setValue(productInfo)
+
     logger.info({
       type: type,
       message: `${type}: Successfully completed execution.`,
