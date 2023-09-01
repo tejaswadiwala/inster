@@ -3,6 +3,7 @@ import logger from '../../logger'
 // import OpenAIController from '../../openai/OpenAIController'
 // import ChatGPT from '../../openai/chatgpt/ChatGPT'
 import ShopifyController from '../../shopify/ShopifyController'
+import PostService from './PostService'
 import { ProductInfo } from './models/ProductInfo'
 
 export const generateProductInfo = async (
@@ -21,7 +22,17 @@ export const generateProductInfo = async (
     )
     const allProducts: GetAllProductsDTO =
       await shopifyController.getAllProducts()
-    const randomProduct = selectRandomProduct(allProducts.products)
+
+    let randomProduct: Product | null = null
+
+    while (
+      !randomProduct ||
+      PostService.selectedProductIds.has(randomProduct.id)
+    ) {
+      randomProduct = selectRandomProduct(allProducts.products)
+    }
+
+    PostService.selectedProductIds.add(randomProduct.id)
 
     /* TODO: Uncomment below before going live, i.e., once we get permission from Meta
     const prompt: string = ChatGPT.Personas.SocialMediaManager.captionCreator(
@@ -44,6 +55,7 @@ export const generateProductInfo = async (
       type: type,
       message: `${type}: Successfully completed execution.`,
       requestId: requestId,
+      productInfo: productInfo,
     })
     return productInfo
   } catch (error) {

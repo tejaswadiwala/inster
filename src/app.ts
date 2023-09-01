@@ -38,6 +38,7 @@ app.get(
     }
   }
 )
+
 app.get(
   '/post/generateProductInfo',
   verifyTokenMiddleware,
