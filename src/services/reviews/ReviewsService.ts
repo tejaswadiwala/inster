@@ -2,6 +2,10 @@ import logger, { serializeError } from '../../logger'
 import OpenAIController from '../../openai/OpenAIController'
 import { reviewGenerator } from '../../openai/chatgpt/personas/reviewGenerator'
 import { getAllProducts } from '../../shopify/getAllProducts'
+import * as Papa from 'papaparse'
+import { flattenArray } from '../helpers/flattenArray'
+import { writeFileSync } from 'fs'
+import { getAbsolutePathFromRelativePath } from '../helpers/getAbsolutePathFromRelativePath'
 
 class ReviewsService {
   public static async generate(
@@ -17,26 +21,44 @@ class ReviewsService {
       })
       if (!generateReviewsRequest.productIds) {
         // In the case when we want to generate reviews for all the products
-        const allProducts: GetAllProductsDTO = await getAllProducts(requestId)
-
+        const allProducts = await getAllProducts(requestId)
+        let generatedReviews = []
         let exportCsvCounter = 0
+        let batchCounter = 1
+
         for (const product of allProducts.products) {
+          const generatedReviewsForOneProduct = await generateReviews(
+            product,
+            generateReviewsRequest.csvFormat,
+            requestId
+          )
+
+          generatedReviews.push(
+            Papa.parse(generatedReviewsForOneProduct, {
+              header: true, // Treat the first row as headers
+              skipEmptyLines: true, // Skip empty lines
+            }).data
+          )
+
           if (exportCsvCounter > 10) {
-            const openaiController = new OpenAIController(requestId)
-            await openaiController.chatGPT.getResponse(
-              reviewGenerator(
-                product.title,
-                product.body_html,
-                generateReviewsRequest.csvFormat,
-                requestId
-              )
-            )
+            const flattenedGeneratedReviews = flattenArray(generatedReviews)
+
+            const now = new Date()
+            const currentDateTimeString = now.toISOString()
+            const filePath = `src/services/reviews/export/batch-${batchCounter}-${currentDateTimeString}.csv`
+            const absoluteFilePath = getAbsolutePathFromRelativePath(filePath)
+            const finalCsvExport = Papa.unparse(flattenedGeneratedReviews)
+            writeFileSync(absoluteFilePath, finalCsvExport)
+            batchCounter++
+
             exportCsvCounter = 0
+            generatedReviews = []
           }
           exportCsvCounter++
         }
       } else {
         // In the case when productIds is given
+        // TODO: Add the implementation
       }
       logger.info({
         message: `${type}: Successfully completed execution.`,
@@ -53,6 +75,18 @@ class ReviewsService {
       throw error
     }
   }
+}
+
+const generateReviews = async (
+  product: Product,
+  csvFormat: string,
+  requestId: string
+) => {
+  const openaiController = new OpenAIController(requestId)
+  const generatedReviews = await openaiController.chatGPT.getResponse(
+    reviewGenerator(product, csvFormat, requestId)
+  )
+  return generatedReviews
 }
 
 export default ReviewsService
