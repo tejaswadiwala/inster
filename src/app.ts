@@ -5,8 +5,10 @@ import Routes from './routes/Routes'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import { FRONTEND_ORIGIN } from './config'
-import { verifyTokenMiddleware } from './auth'
+import { verifyTokenMiddleware } from './middleware/auth'
 import { ProductInfo } from './services/post/models/ProductInfo'
+import { requestId } from './middleware/requestId'
+import Reviews from './routes/reviews/Reviews'
 
 const app = express()
 app.use(bodyParser.json())
@@ -99,5 +101,13 @@ app.post('/login', async (req, res) => {
   }
 })
 /* === Login Registration Ends === */
+
+/* === Reviews Start === */
+app.post(
+  '/reviews/generate',
+  [requestId, verifyTokenMiddleware],
+  Reviews.generate
+)
+/* === Review End === */
 
 export default app

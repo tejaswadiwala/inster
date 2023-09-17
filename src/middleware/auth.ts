@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt2 from 'jsonwebtoken'
-import logger from './logger'
-import { PUBLIC_KEY } from './config'
+import logger from '../logger'
+import { PUBLIC_KEY } from '../config'
 
 export function verifyTokenMiddleware(
   req: Request,
