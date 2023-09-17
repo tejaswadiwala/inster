@@ -3,7 +3,6 @@ import OpenAIController from '../../openai/OpenAIController'
 import { reviewGenerator } from '../../openai/chatgpt/personas/reviewGenerator'
 import { getAllProducts } from '../../shopify/getAllProducts'
 import * as Papa from 'papaparse'
-import { flattenArray } from '../helpers/flattenArray'
 import { writeFileSync } from 'fs'
 import { getAbsolutePathFromRelativePath } from '../helpers/getAbsolutePathFromRelativePath'
 
@@ -13,6 +12,7 @@ class ReviewsService {
     requestId: string
   ) {
     const type = 'ReviewsService.generate'
+    const processedProducts = []
     try {
       logger.info({
         message: `${type}: Starting now.`,
@@ -33,21 +33,15 @@ class ReviewsService {
             requestId
           )
 
-          generatedReviews.push(
-            Papa.parse(generatedReviewsForOneProduct, {
-              header: true, // Treat the first row as headers
-              skipEmptyLines: true, // Skip empty lines
-            }).data
-          )
+          generatedReviews.push(...generatedReviewsForOneProduct)
+          processedProducts.push(product.id)
 
           if (exportCsvCounter > 10) {
-            const flattenedGeneratedReviews = flattenArray(generatedReviews)
-
             const now = new Date()
             const currentDateTimeString = now.toISOString()
             const filePath = `src/services/reviews/export/batch-${batchCounter}-${currentDateTimeString}.csv`
             const absoluteFilePath = getAbsolutePathFromRelativePath(filePath)
-            const finalCsvExport = Papa.unparse(flattenedGeneratedReviews)
+            const finalCsvExport = Papa.unparse(generatedReviews)
             writeFileSync(absoluteFilePath, finalCsvExport)
             batchCounter++
 
@@ -68,6 +62,7 @@ class ReviewsService {
     } catch (error) {
       logger.error({
         message: `${type}: Error occurred.`,
+        processedProducts,
         type: type,
         requestId: requestId,
         error: serializeError(error),
@@ -86,7 +81,11 @@ const generateReviews = async (
   const generatedReviews = await openaiController.chatGPT.getResponse(
     reviewGenerator(product, csvFormat, requestId)
   )
-  return generatedReviews
+
+  const unescapedJsonString = generatedReviews.replace(/\\"/g, '"')
+  // Parse the unescaped JSON string into an object
+  const parsedObject = JSON.parse(unescapedJsonString)
+  return parsedObject
 }
 
 export default ReviewsService
