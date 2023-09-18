@@ -1,3 +1,4 @@
+import { UploadImageMediaDTO } from '../dtos/UploadImageMediaDTO'
 import { publishMedia } from './publishMedia'
 import { uploadImageMedia } from './uploadImageMedia'
 

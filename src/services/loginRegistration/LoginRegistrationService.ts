@@ -1,4 +1,7 @@
 import { authenticate } from './authenticate'
+import { LoginRequestDTO } from './dtos/LoginRequestDTO'
+import { LoginResponseDTO } from './dtos/LoginResponseDTO'
+import { RegistrationRequestDTO } from './dtos/RegistrationRequestDTO'
 import { register } from './register'
 import { signJWT } from './signJWT'
 

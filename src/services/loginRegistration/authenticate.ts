@@ -3,6 +3,7 @@ import PsqlDbController from '../../psql/PsqlDbController'
 import pool from '../../psql/psqlAuth'
 import { QueryResult } from 'pg'
 import crypto from 'crypto'
+import { LoginRequestDTO } from './dtos/LoginRequestDTO'
 
 export const authenticate = async (
   loginRequest: LoginRequestDTO,

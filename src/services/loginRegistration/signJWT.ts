@@ -1,6 +1,8 @@
 import { PRIVATE_KEY } from '../../config'
 import logger from '../../logger'
 import jwt2 from 'jsonwebtoken'
+import { LoginRequestDTO } from './dtos/LoginRequestDTO'
+import { LoginResponseDTO } from './dtos/LoginResponseDTO'
 
 export const signJWT = async (
   loginRequest: LoginRequestDTO,

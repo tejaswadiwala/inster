@@ -1,4 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface LoginResponseDTO {
+export interface LoginResponseDTO {
   token: string
 }

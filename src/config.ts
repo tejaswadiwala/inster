@@ -63,3 +63,9 @@ export const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN
 /* ============== PostGreSql Database ============== */
 
 export const DATABASE_URL = process.env.DATABASE_URL
+
+/* ============== Reviews Service ============== */
+
+export const REVIEWS_SERVICE_PROCESSING_BATCH_SIZE = parseInt(
+  process.env.REVIEWS_SERVICE_PROCESSING_BATCH_SIZE ?? '5'
+)

@@ -3,6 +3,8 @@ import logger from '../../logger'
 // import OpenAIController from '../../openai/OpenAIController'
 // import ChatGPT from '../../openai/chatgpt/ChatGPT'
 import ShopifyController from '../../shopify/ShopifyController'
+import { GetAllProductsDTO } from '../../shopify/dtos/GetAllProductsDTO'
+import { Product } from '../../shopify/models/Product'
 import PostService from './PostService'
 import { ProductInfo } from './models/ProductInfo'
 

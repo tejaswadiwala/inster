@@ -6,6 +6,7 @@ import {
 } from '../config'
 import Helpers from '../helpers/Helpers'
 import logger from '../logger'
+import { GetLongLivedTokenDTO } from './dtos/GetLongLivedTokenDTO'
 import { metaAxiosInstance } from './metaAuth'
 import { AxiosResponse } from 'axios'
 

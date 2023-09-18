@@ -5,6 +5,9 @@ import { getAllProducts } from '../../shopify/getAllProducts'
 import * as Papa from 'papaparse'
 import { writeFileSync } from 'fs'
 import { getAbsolutePathFromRelativePath } from '../helpers/getAbsolutePathFromRelativePath'
+import { GenerateReviewsRequestDTO } from './dtos/GenerateReviewsRequestDTO'
+import { Product } from '../../shopify/models/Product'
+import { REVIEWS_SERVICE_PROCESSING_BATCH_SIZE } from '../../config'
 
 class ReviewsService {
   public static async generate(
@@ -12,7 +15,10 @@ class ReviewsService {
     requestId: string
   ) {
     const type = 'ReviewsService.generate'
-    const processedProducts = []
+    const processedProducts: number[] = []
+    let batchCounter = 1
+    let generatedReviews = []
+    let exportCsvCounter = 0
     try {
       logger.info({
         message: `${type}: Starting now.`,
@@ -22,11 +28,13 @@ class ReviewsService {
       if (!generateReviewsRequest.productIds) {
         // In the case when we want to generate reviews for all the products
         const allProducts = await getAllProducts(requestId)
-        let generatedReviews = []
-        let exportCsvCounter = 0
-        let batchCounter = 1
 
         for (const product of allProducts.products) {
+          if (processedProducts.includes(product.id)) {
+            continue
+          }
+          exportCsvCounter++
+
           const generatedReviewsForOneProduct = await generateReviews(
             product,
             generateReviewsRequest.csvFormat,
@@ -36,19 +44,13 @@ class ReviewsService {
           generatedReviews.push(...generatedReviewsForOneProduct)
           processedProducts.push(product.id)
 
-          if (exportCsvCounter > 10) {
-            const now = new Date()
-            const currentDateTimeString = now.toISOString()
-            const filePath = `src/services/reviews/export/batch-${batchCounter}-${currentDateTimeString}.csv`
-            const absoluteFilePath = getAbsolutePathFromRelativePath(filePath)
-            const finalCsvExport = Papa.unparse(generatedReviews)
-            writeFileSync(absoluteFilePath, finalCsvExport)
-            batchCounter++
-
+          if (exportCsvCounter > REVIEWS_SERVICE_PROCESSING_BATCH_SIZE) {
+            exportToCsv(generatedReviews, batchCounter)
+            console.log(batchCounter)
             exportCsvCounter = 0
             generatedReviews = []
+            batchCounter++
           }
-          exportCsvCounter++
         }
       } else {
         // In the case when productIds is given
@@ -60,6 +62,7 @@ class ReviewsService {
         requestId: requestId,
       })
     } catch (error) {
+      exportToCsv(generatedReviews, batchCounter)
       logger.error({
         message: `${type}: Error occurred.`,
         processedProducts,
@@ -86,6 +89,16 @@ const generateReviews = async (
   // Parse the unescaped JSON string into an object
   const parsedObject = JSON.parse(unescapedJsonString)
   return parsedObject
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const exportToCsv = (generatedReviews: any, batchCounter: number) => {
+  const now = new Date()
+  const currentDateTimeString = now.toISOString()
+  const filePath = `src/services/reviews/export/batch-${batchCounter}-${currentDateTimeString}.csv`
+  const absoluteFilePath = getAbsolutePathFromRelativePath(filePath)
+  const finalCsvExport = Papa.unparse(generatedReviews)
+  writeFileSync(absoluteFilePath, finalCsvExport)
 }
 
 export default ReviewsService

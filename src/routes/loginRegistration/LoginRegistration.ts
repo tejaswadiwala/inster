@@ -1,3 +1,6 @@
+import { LoginRequestDTO } from '../../services/loginRegistration/dtos/LoginRequestDTO'
+import { LoginResponseDTO } from '../../services/loginRegistration/dtos/LoginResponseDTO'
+import { RegistrationRequestDTO } from '../../services/loginRegistration/dtos/RegistrationRequestDTO'
 import { login } from './login'
 import { register } from './register'
 

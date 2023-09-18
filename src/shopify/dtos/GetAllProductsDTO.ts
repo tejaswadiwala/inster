@@ -1,4 +1,6 @@
+import { Product } from '../models/Product'
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface GetAllProductsDTO {
+export interface GetAllProductsDTO {
   products: Product[]
 }
