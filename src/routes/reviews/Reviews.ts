@@ -8,10 +8,7 @@ class Reviews {
     const type = 'Reviews.generate'
     try {
       const generateReviewsRequest = req.body
-      await ReviewsService.generate(
-        generateReviewsRequest,
-        req.requestId as string
-      )
+      ReviewsService.generate(generateReviewsRequest, req.requestId as string)
       return res.status(200).send({ data: 'ok', requestId: req.requestId })
     } catch (error) {
       logger.error({
