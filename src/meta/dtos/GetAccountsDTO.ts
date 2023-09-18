@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface GetAccountsDTO {
+export interface GetAccountsDTO {
   data: GetAccountsData[]
   paging: {
     cursors: {

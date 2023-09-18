@@ -2,6 +2,7 @@ import logger from '../../logger'
 import crypto from 'crypto'
 import PsqlDbController from '../../psql/PsqlDbController'
 import pool from '../../psql/psqlAuth'
+import { RegistrationRequestDTO } from './dtos/RegistrationRequestDTO'
 
 export const register = async (
   registrationInformation: RegistrationRequestDTO,

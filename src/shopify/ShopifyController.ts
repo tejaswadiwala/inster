@@ -1,3 +1,4 @@
+import { GetAllProductsDTO } from './dtos/GetAllProductsDTO'
 import { getAllProducts } from './getAllProducts'
 
 class ShopifyController {

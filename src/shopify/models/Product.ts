@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Product {
+export interface Product {
   id: number
   title: string
   body_html: string

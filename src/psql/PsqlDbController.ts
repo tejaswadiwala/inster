@@ -1,5 +1,7 @@
 import { Pool, QueryResult } from 'pg'
 import logger from '../logger'
+import { LoginRequestDTO } from '../services/loginRegistration/dtos/LoginRequestDTO'
+import { RegistrationRequestDTO } from '../services/loginRegistration/dtos/RegistrationRequestDTO'
 
 enum TABLE {
   NAME = 'inster_user_accounts',

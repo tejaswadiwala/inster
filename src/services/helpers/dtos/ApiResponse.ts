@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ApiResponse {
+export interface ApiResponse {
   data: string
   statusCode: number
 }

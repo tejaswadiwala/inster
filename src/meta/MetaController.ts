@@ -1,3 +1,5 @@
+import { GetAccountsDTO } from './dtos/GetAccountsDTO'
+import { GetLongLivedTokenDTO } from './dtos/GetLongLivedTokenDTO'
 import { getAccounts } from './getAccounts'
 import { getLongLivedToken } from './getLongLivedToken'
 import { getName } from './getName'

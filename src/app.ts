@@ -9,6 +9,8 @@ import { verifyTokenMiddleware } from './middleware/auth'
 import { ProductInfo } from './services/post/models/ProductInfo'
 import { requestId } from './middleware/requestId'
 import Reviews from './routes/reviews/Reviews'
+import { RegistrationRequestDTO } from './services/loginRegistration/dtos/RegistrationRequestDTO'
+import { LoginRequestDTO } from './services/loginRegistration/dtos/LoginRequestDTO'
 
 const app = express()
 app.use(bodyParser.json())

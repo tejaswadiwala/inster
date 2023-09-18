@@ -1,5 +1,6 @@
 import logger, { serializeError } from '../../logger'
 import MetaController from '../../meta/MetaController'
+import { UploadImageMediaDTO } from '../../meta/dtos/UploadImageMediaDTO'
 import PostService from './PostService'
 import { ProductInfo } from './models/ProductInfo'
 

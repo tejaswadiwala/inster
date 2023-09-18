@@ -6,6 +6,7 @@ import {
 import Helpers from '../../helpers/Helpers'
 import logger from '../../logger'
 import { metaAxiosInstance } from '../metaAuth'
+import { UploadImageMediaDTO } from '../dtos/UploadImageMediaDTO'
 
 export const uploadImageMedia = async (
   imageURL: string,

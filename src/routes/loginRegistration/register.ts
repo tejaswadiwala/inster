@@ -1,5 +1,6 @@
 import logger from '../../logger'
 import LoginRegistrationService from '../../services/loginRegistration/LoginRegistrationService'
+import { RegistrationRequestDTO } from '../../services/loginRegistration/dtos/RegistrationRequestDTO'
 
 export const register = async (
   registrationInformation: RegistrationRequestDTO,

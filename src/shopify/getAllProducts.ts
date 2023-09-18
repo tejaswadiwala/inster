@@ -3,6 +3,7 @@ import logger from '../logger'
 import { AxiosResponse } from 'axios'
 import { shopifyAxiosInstance } from './shopifyAuth'
 import { SHOPIFY_GET_ALL_PRODUCTS_PARAMS } from '../config'
+import { GetAllProductsDTO } from './dtos/GetAllProductsDTO'
 
 export const getAllProducts = async (
   requestId: string

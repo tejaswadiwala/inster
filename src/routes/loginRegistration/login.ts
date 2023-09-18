@@ -1,5 +1,7 @@
 import logger from '../../logger'
 import LoginRegistrationService from '../../services/loginRegistration/LoginRegistrationService'
+import { LoginRequestDTO } from '../../services/loginRegistration/dtos/LoginRequestDTO'
+import { LoginResponseDTO } from '../../services/loginRegistration/dtos/LoginResponseDTO'
 
 export const login = async (
   loginRequest: LoginRequestDTO,

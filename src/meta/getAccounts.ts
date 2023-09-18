@@ -1,5 +1,6 @@
 import Helpers from '../helpers/Helpers'
 import logger from '../logger'
+import { GetAccountsDTO } from './dtos/GetAccountsDTO'
 import { metaAxiosInstance } from './metaAuth'
 import { AxiosResponse } from 'axios'
 
