@@ -16,9 +16,10 @@ class ReviewsService {
   ) {
     const type = 'ReviewsService.generate'
     const processedProducts: number[] = []
+    const productsNotProcessed: number[] = []
     let batchCounter = 1
     let generatedReviews = []
-    let exportCsvCounter = 0
+    let exportCsvCounter = 1
     try {
       logger.info({
         message: `${type}: Starting now.`,
@@ -35,21 +36,33 @@ class ReviewsService {
           }
           exportCsvCounter++
 
-          const generatedReviewsForOneProduct = await generateReviews(
-            product,
-            generateReviewsRequest.csvFormat,
-            requestId
-          )
+          try {
+            const generatedReviewsForOneProduct = await generateReviews(
+              product,
+              generateReviewsRequest.csvFormat,
+              requestId
+            )
 
-          generatedReviews.push(...generatedReviewsForOneProduct)
-          processedProducts.push(product.id)
+            generatedReviews.push(...generatedReviewsForOneProduct)
 
-          if (exportCsvCounter > REVIEWS_SERVICE_PROCESSING_BATCH_SIZE) {
+            if (exportCsvCounter > REVIEWS_SERVICE_PROCESSING_BATCH_SIZE) {
+              exportToCsv(generatedReviews, batchCounter)
+              processedProducts.push(product.id)
+              exportCsvCounter = 0
+              generatedReviews = []
+              batchCounter++
+            }
+          } catch (error) {
+            logger.error({
+              message: `${type}: Error while processing.`,
+              productsNotProcessed,
+              type,
+              requestId,
+            })
             exportToCsv(generatedReviews, batchCounter)
-            console.log(batchCounter)
-            exportCsvCounter = 0
-            generatedReviews = []
+            productsNotProcessed.push(product.id)
             batchCounter++
+            continue
           }
         }
       } else {
@@ -58,6 +71,7 @@ class ReviewsService {
       }
       logger.info({
         message: `${type}: Successfully completed execution.`,
+        productsNotProcessed,
         type: type,
         requestId: requestId,
       })
@@ -65,7 +79,7 @@ class ReviewsService {
       exportToCsv(generatedReviews, batchCounter)
       logger.error({
         message: `${type}: Error occurred.`,
-        processedProducts,
+        productsNotProcessed,
         type: type,
         requestId: requestId,
         error: serializeError(error),

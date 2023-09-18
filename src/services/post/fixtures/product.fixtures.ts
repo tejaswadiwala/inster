@@ -1,4 +1,4 @@
-import { Product } from "../../../shopify/models/Product"
+import { Product } from '../../../shopify/models/Product'
 
 const product: Product = {
   id: 12345,
