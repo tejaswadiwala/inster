@@ -114,7 +114,7 @@ app.post(
 /* === Review End === */
 
 /* === Meta Start === */
-app.get(
+app.post(
   '/meta/basicMetadata',
   [requestId, verifyTokenMiddleware],
   basicMetadataRoute
