@@ -7,6 +7,11 @@ export const basicMetadataRoute = async (req: CustomRequest, res: Response) => {
   const type = 'getBasicMetadataRoute'
   try {
     const basicMetadataRequest = req.body
+    logger.info({
+      message: `${type}: Starting now.`,
+      type: type,
+      basicMetadataRequest: basicMetadataRequest,
+    })
     const data = await getBasicMetadata(basicMetadataRequest, req.requestId!)
     return res.status(200).send({ data: data, requestId: req.requestId })
   } catch (error) {
