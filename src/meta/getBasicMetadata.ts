@@ -3,7 +3,10 @@ import logger from '../logger'
 import { metaAxiosInstance } from './metaAuth'
 import { AxiosResponse } from 'axios'
 import { BasicMetadata } from './models/BasicMetadata'
-import { META_LONG_LIVED_ACCESS_TOKEN } from '../config'
+import {
+  META_INSTAGRAM_BUSINESS_ACCOUNT_ID,
+  META_LONG_LIVED_ACCESS_TOKEN,
+} from '../config'
 
 export const getBasicMetadata = async (
   basicMetadata: BasicMetadata,
@@ -28,7 +31,7 @@ export const getBasicMetadata = async (
 
     let endpoint
     if (basicMetadata.id) {
-      endpoint = `/${basicMetadata.id}?fields=${fieldsString}&access_token=${META_LONG_LIVED_ACCESS_TOKEN}`
+      endpoint = `/${META_INSTAGRAM_BUSINESS_ACCOUNT_ID}?fields=${fieldsString}&access_token=${META_LONG_LIVED_ACCESS_TOKEN}`
     } else {
       endpoint = '/me?fields=id,name&transport=cors'
     }
