@@ -1,6 +1,7 @@
 import logger, { serializeError } from '../../logger'
-import MetaController from '../../meta/MetaController'
 import { UploadImageMediaDTO } from '../../meta/dtos/UploadImageMediaDTO'
+import { publishMedia } from '../../meta/instagram/publishMedia'
+import { uploadImageMedia } from '../../meta/instagram/uploadImageMedia'
 import PostService from './PostService'
 import { ProductInfo } from './models/ProductInfo'
 
@@ -16,21 +17,20 @@ export const postPhotoToInstagram = async (
       requestId: requestId,
     })
 
-    const metaController: MetaController = new MetaController(requestId)
-
-    const uploadImageMedia: UploadImageMediaDTO =
-      await metaController.instagram.uploadImageMedia(
+    const uploadImageMediaResponse: UploadImageMediaDTO =
+      await uploadImageMedia(
         productInfo.imageUrl,
-        productInfo.caption
+        productInfo.caption,
+        requestId
       )
 
     logger.info({
       type: type,
-      message: `${type}: Upload Image Media Id - ${uploadImageMedia.id}.`,
+      message: `${type}: Upload Image Media Id - ${uploadImageMediaResponse.id}.`,
       requestId: requestId,
     })
 
-    await metaController.instagram.publishMedia(uploadImageMedia.id)
+    await publishMedia(uploadImageMediaResponse.id, requestId)
 
     PostService.productInfoCache.clear()
 

@@ -40,8 +40,9 @@ export const getLongLivedToken = async (
 
     logger.info({
       type: type,
-      message: `${type}: Successfully completed execution - ${response.data}.`,
+      message: `${type}: Successfully completed execution.`,
       requestId: requestId,
+      response: response.data,
     })
     return response.data
   } catch (error) {

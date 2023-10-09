@@ -11,6 +11,7 @@ import { requestId } from './middleware/requestId'
 import Reviews from './routes/reviews/Reviews'
 import { RegistrationRequestDTO } from './services/loginRegistration/dtos/RegistrationRequestDTO'
 import { LoginRequestDTO } from './services/loginRegistration/dtos/LoginRequestDTO'
+import { basicMetadataRoute } from './routes/meta/basicMetadataRoute'
 
 const app = express()
 app.use(bodyParser.json())
@@ -111,5 +112,13 @@ app.post(
   Reviews.generate
 )
 /* === Review End === */
+
+/* === Meta Start === */
+app.get(
+  '/meta/basicMetadata',
+  [requestId, verifyTokenMiddleware],
+  basicMetadataRoute
+)
+/* === Meta End === */
 
 export default app
