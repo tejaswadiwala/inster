@@ -53,6 +53,7 @@ class ReviewsService {
               batchCounter++
             }
           } catch (error) {
+            productsNotProcessed.push(product.id)
             logger.error({
               message: `${type}: Error while processing.`,
               productsNotProcessed,
@@ -60,7 +61,6 @@ class ReviewsService {
               requestId,
             })
             exportToCsv(generatedReviews, batchCounter)
-            productsNotProcessed.push(product.id)
             batchCounter++
             continue
           }
