@@ -24,7 +24,7 @@ export const reviewGenerator = (
         Product Id: ${product.id}
         Product Handle: ${product.handle}
 
-        Generate 10 unique and engaging product reviews from the above given description of the product.
+        Generate 15-20 unique and engaging product reviews from the above given description of the product.
 
         Following are the points to keep in mind: 
         1. The reviews should be backdated, select any random date after 05/30/2023 till ${todayInDDMMYYYFormat}, dont only select dates of october. 
