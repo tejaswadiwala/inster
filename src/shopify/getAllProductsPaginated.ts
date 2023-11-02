@@ -22,20 +22,16 @@ export const getAllProductsPaginated = async (
 
     const endpoint = `https://${SHOPIFY_API_KEY}:${SHOPIFY_API_PASSWORD}@${SHOPIFY_SHOP_NAME}.myshopify.com/admin/api/${SHOPIFY_API_VERSION}/products.json?status=active&count=true`
 
-    // An array to store all product data from multiple pages
     const allProducts: GetAllProductsDTO[] = []
 
-    // Use a loop to handle paginated requests
-    let nextPageUrl: string | undefined = endpoint // Initialize with the first page
+    let nextPageUrl: string | undefined = endpoint
     while (nextPageUrl) {
       const response: AxiosResponse = await axios.get(nextPageUrl, {
         headers: { 'X-Shopify-Access-Token': SHOPIFY_ACCESS_TOKEN },
       })
 
-      // Add the products from the current page to the allProducts array
       allProducts.push(...response.data.products)
 
-      // Check if there is a 'next' link in the response headers
       const linkHeader = response.headers.link
       if (linkHeader) {
         const nextPageMatch = linkHeader.match(/<([^>]+)>;\s*rel="next"/)
@@ -55,7 +51,6 @@ export const getAllProductsPaginated = async (
       requestId: requestId,
     })
 
-    // Return the combined product data from all pages
     return allProducts
   } catch (error) {
     logger.error({
