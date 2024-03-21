@@ -54,14 +54,15 @@ class ReviewsService {
             }
           } catch (error) {
             productsNotProcessed.push(product.id)
+            exportToCsv(generatedReviews, batchCounter)
+            productsNotProcessed.push(product.id)
+            batchCounter++
             logger.error({
               message: `${type}: Error while processing.`,
               productsNotProcessed,
               type,
               requestId,
             })
-            exportToCsv(generatedReviews, batchCounter)
-            batchCounter++
             continue
           }
         }
