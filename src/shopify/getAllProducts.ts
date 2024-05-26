@@ -25,18 +25,34 @@ export const getAllProducts = async (
       },
     }
 
-    const response: AxiosResponse = await helpers.axiosHelper.getResponse(
+    let allProducts: any[] = []
+
+    let response: AxiosResponse = await helpers.axiosHelper.getResponse(
       shopifyAxiosInstance,
       endpoint,
       config
     )
+
+    while (response.data.products.length > 0) {
+      allProducts = allProducts.concat(response.data.products)
+
+      const nextPageLink = getNextPageLink(response.headers)
+      if (!nextPageLink) {
+        break
+      }
+
+      response = await helpers.axiosHelper.getResponse(
+        shopifyAxiosInstance,
+        nextPageLink
+      )
+    }
 
     logger.info({
       type: type,
       message: `${type}: Successfully completed execution.`,
       requestId: requestId,
     })
-    return response.data
+    return { products: allProducts }
   } catch (error) {
     logger.error({
       type: type,
@@ -46,4 +62,15 @@ export const getAllProducts = async (
     })
     throw error
   }
+}
+
+const getNextPageLink = (headers: any): string | undefined => {
+  const linkHeader = headers['link']
+  if (linkHeader && typeof linkHeader === 'string') {
+    const matches = linkHeader.match(/<([^>]+)>;\s*rel="next"/)
+    if (matches && matches.length > 1) {
+      return matches[1]
+    }
+  }
+  return undefined
 }

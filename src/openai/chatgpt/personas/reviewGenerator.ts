@@ -1,5 +1,6 @@
 import logger from '../../../logger'
 import DateHelper from '../../../services/helpers/Date'
+import { getRandomNumberBetween } from '../../../services/helpers/getRandomNumberBetween'
 import { Product } from '../../../shopify/models/Product'
 
 export const reviewGenerator = (
@@ -17,6 +18,13 @@ export const reviewGenerator = (
 
     const today = new Date()
     const todayInYYYY_MM_DDFormat = DateHelper.getInYYYY_MM_DDFormat(today)
+    const numberOfReviewsToBeGenerated = getRandomNumberBetween(50, 100)
+
+    logger.info({
+      type: type,
+      message: `${type}: Generating ${numberOfReviewsToBeGenerated} reviews.`,
+      requestId: requestId,
+    })
 
     const prompt: string = `
         Product Name: ${product.title}
@@ -24,7 +32,7 @@ export const reviewGenerator = (
         Product Id: ${product.id}
         Product Handle: ${product.handle}
 
-        Generate 25 unique and engaging product reviews from the above given description of the product.
+        Generate ${numberOfReviewsToBeGenerated} unique and engaging product reviews from the above given description of the product.
 
         Following are the points to keep in mind: 
         1. The reviews should be backdated, select any random date after 12/01/2023 till ${todayInYYYY_MM_DDFormat}, dont only select dates of october. 
