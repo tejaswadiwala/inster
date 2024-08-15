@@ -52,6 +52,7 @@ export async function exportProducts(
           productsNotProcessed,
           type,
           requestId,
+          error: serializeError(error),
         })
         continue
       }
@@ -86,7 +87,7 @@ const generateReviews = async (
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const exportToCsv = (generatedReviews: any, batchCounter: number) => {
+export const exportToCsv = (generatedReviews: any, batchCounter: number) => {
   const now = new Date()
   const currentDateTimeString = now.toISOString()
   const filePath = `src/services/reviews/export/batch-${batchCounter}-${currentDateTimeString}.csv`

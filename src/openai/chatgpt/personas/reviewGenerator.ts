@@ -35,7 +35,7 @@ export const reviewGenerator = (
         Generate ${numberOfReviewsToBeGenerated} unique and engaging product reviews from the above given description of the product.
 
         Following are the points to keep in mind: 
-        1. The reviews should be backdated, select any random date after 12/01/2023 till ${todayInYYYY_MM_DDFormat}, dont only select dates of october. 
+        1. The reviews should be backdated, select any random date after 02/06/2024 till ${todayInYYYY_MM_DDFormat}, dont only select dates of october. 
         2. Also all the emails should not disclose personal information, it should start with first name and then have * till .com.
         3. All of the names should be Indian, and it should contain First Name and Last Name. 
         4. The review should be concise, and make sure reviews are not repeated.
