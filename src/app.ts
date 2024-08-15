@@ -12,6 +12,8 @@ import Reviews from './routes/reviews/Reviews'
 import { RegistrationRequestDTO } from './services/loginRegistration/dtos/RegistrationRequestDTO'
 import { LoginRequestDTO } from './services/loginRegistration/dtos/LoginRequestDTO'
 import { basicMetadataRoute } from './routes/meta/basicMetadataRoute'
+import { exportToCsv } from './services/reviews/exportProducts'
+import SeoBettermentRoute from './routes/seo/SeoBettermentRoute'
 
 const app = express()
 app.use(bodyParser.json())
@@ -111,6 +113,16 @@ app.post(
   [requestId, verifyTokenMiddleware],
   Reviews.generate
 )
+
+app.post('/reviews/exportToCsv', verifyTokenMiddleware, async (req, res) => {
+  const requestId = uuidv4()
+  try {
+    exportToCsv(req.body, 1)
+    return res.status(200).send({ data: 'ok', requestId: requestId })
+  } catch (error) {
+    return res.status(500).send({ error: error, requestId: requestId })
+  }
+})
 /* === Review End === */
 
 /* === Meta Start === */
@@ -118,7 +130,8 @@ app.post(
   '/meta/basicMetadata',
   [requestId, verifyTokenMiddleware],
   basicMetadataRoute
-)
-/* === Meta End === */
+)/* === Meta End === */
+
+app.post('/seo/betterment/start', [requestId, verifyTokenMiddleware], SeoBettermentRoute.routing)
 
 export default app
