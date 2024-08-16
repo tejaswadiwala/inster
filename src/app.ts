@@ -130,8 +130,12 @@ app.post(
   '/meta/basicMetadata',
   [requestId, verifyTokenMiddleware],
   basicMetadataRoute
-)/* === Meta End === */
+) /* === Meta End === */
 
-app.post('/seo/betterment/start', [requestId, verifyTokenMiddleware], SeoBettermentRoute.routing)
+app.post(
+  '/seo/betterment/start',
+  [requestId, verifyTokenMiddleware],
+  SeoBettermentRoute.routing
+)
 
 export default app

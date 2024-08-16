@@ -1,6 +1,8 @@
 export type UpdateMetafield = {
   metafield: {
-    id: number
+    key: string
     value: string
+    namespace: string
+    type: string
   }
 }

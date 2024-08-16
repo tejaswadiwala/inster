@@ -57,7 +57,7 @@ interface Option {
   values: string[]
 }
 
-interface Image {
+export interface Image {
   id: number
   product_id: number
   position: number
