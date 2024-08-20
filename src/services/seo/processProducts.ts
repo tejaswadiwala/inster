@@ -25,6 +25,18 @@ export async function processProducts(
       requestId: requestId,
     })
 
+    if (body.skipProductIds) {
+      for (const skipProductId of body.skipProductIds) {
+        logger.info({
+          message: `${type}: Product id - ${skipProductId} in skipProductIds, skipping it.`,
+          type: type,
+          requestId: requestId,
+        })
+        continue
+      }
+      continue
+    }
+
     if (product.product_type != 'Oversized T-shirt') {
       logger.info({
         message: `${type}: Product type - ${product.product_type} not supported.`,
