@@ -48,8 +48,26 @@ export async function processProducts(
 
     const metafields = await getMetafieldByProductId(product.id, requestId)
 
+    let productName
+    try {
+      productName = getProductNameFromMetafield(metafields, product.id)
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message == `Name not present for this product - ${product.id}`
+      ) {
+        logger.info({
+          message: `${type}: Name not present for this product - ${product.id}.`,
+          type: type,
+          requestId: requestId,
+        })
+        continue
+      }
+      throw error
+    }
+
     const productFeaturesChatGpt: ProductFeaturesChatGpt = {
-      productName: getProductNameFromMetafield(metafields, product.id),
+      productName: productName,
       color: extractColor(product.title),
       keywords: body.keywords,
     }
@@ -176,7 +194,11 @@ async function createProductFeaturesFromChatGpt(
   const openaiController = new OpenAIController(requestId)
   const chatGptGeneratedProductFeatures =
     await openaiController.chatGPT.getResponse(
-      productFeatureGenerator(productFeaturesChatGpt.keywords, requestId)
+      productFeatureGenerator(
+        productFeaturesChatGpt.productName,
+        productFeaturesChatGpt.keywords,
+        requestId
+      )
     )
   return chatGptGeneratedProductFeatures
 }
