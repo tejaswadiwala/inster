@@ -39,7 +39,7 @@ export const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 
 /* Open AI Enums */
 export enum CHAT_GPT_MODEL {
-  NAME = 'gpt-3.5-turbo',
+  NAME = 'gpt-4o',
 }
 
 /* ============== Shopify ============== */
